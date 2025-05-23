@@ -8,21 +8,18 @@ class Vehicle extends StatefulWidget {
 }
 
 class _VehicleState extends State<Vehicle> {
-  String? _selected = 'yes'; // 기본값 설정
+  String? _selected = 'no';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFDCEEFF),
-      appBar: AppBar(title: Text('차량 등록'),
-        centerTitle: true,
-        backgroundColor: Color(0xFFDCEEFF),
-        titleTextStyle: TextStyle(
-          color: Colors.black,
-          fontSize: 25,
-        ),),
+      backgroundColor: const Color(0xFFDCEEFF),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFDCEEFF),
+        elevation: 0,
+      ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
@@ -32,19 +29,37 @@ class _VehicleState extends State<Vehicle> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TextField(
+            Container(
+              height: 84,
+              alignment: Alignment.center,
+              child: const Text(
+                '차량 등록',
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const Divider(
+              color: Colors.grey,
+              thickness: 10,
+              height: 1,
+            ),
+            const SizedBox(height: 16),
+            const TextField(
               decoration: InputDecoration(labelText: '차량 번호'),
             ),
+            const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
+                const Text(
                   '장애인 여부',
                   style: TextStyle(fontSize: 16),
                 ),
                 Row(
                   children: [
-                    Text('예'),
+                    const Text('예'),
                     Radio<String>(
                       value: 'yes',
                       groupValue: _selected,
@@ -54,7 +69,7 @@ class _VehicleState extends State<Vehicle> {
                         });
                       },
                     ),
-                    Text('아니오'),
+                    const Text('아니오'),
                     Radio<String>(
                       value: 'no',
                       groupValue: _selected,
@@ -68,17 +83,23 @@ class _VehicleState extends State<Vehicle> {
                 ),
               ],
             ),
-
-            TextField(
+            const SizedBox(height: 16),
+            const TextField(
               decoration: InputDecoration(labelText: '관리자 아이디'),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // 등록 로직
-                print('차량 등록 성공!: $_selected');
-              },
-              child: Text('등록'),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFDCEEFF),
+                    foregroundColor: Colors.black,
+                ),
+                onPressed: () {
+                  print('차량 등록 성공!: $_selected');
+                },
+                child: const Text('등록'),
+              ),
             ),
           ],
         ),
