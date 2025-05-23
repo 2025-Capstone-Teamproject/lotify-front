@@ -15,7 +15,7 @@ class _VehicleState extends State<Vehicle> {
     return Scaffold(
       backgroundColor: Color(0xFFDCEEFF),
       appBar: AppBar(title: Text('차량 등록'),
-          centerTitle: true,
+        centerTitle: true,
         backgroundColor: Color(0xFFDCEEFF),
         titleTextStyle: TextStyle(
           color: Colors.black,
