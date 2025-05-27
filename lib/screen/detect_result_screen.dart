@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lotify/screen/component/common_layout.dart';
 
 class DetectionResultScreen extends StatelessWidget {
   final String carNumber;
   final String imageUrl;
   final String locationDescription;
-  final bool violation; // ✅ 불법 주차 여부
+  final bool violation;
   final TextEditingController feedbackController = TextEditingController();
 
   DetectionResultScreen({
@@ -18,17 +20,13 @@ class DetectionResultScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String resultMessage = violation
-        ? "🚨 AI가 불법 주차 차량을 감지했습니다!"
+        ? "🚨 AI가 불법 주차 차량을 감지했습니다"
         : "✅ 정상 주차 상태입니다.";
     final Color statusColor = violation ? Colors.redAccent : Colors.green;
 
-    return Scaffold(
-      backgroundColor: Colors.grey[100],
-      appBar: AppBar(
-        title: const Text('불법 주차 탐지 결과'),
-        backgroundColor: statusColor,
-      ),
-      body: SingleChildScrollView(
+    return CommonLayout(
+      currentIndex: 0, // 하단 네비게이션에서 현재 선택 인덱스
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,7 +121,7 @@ class DetectionResultScreen extends StatelessWidget {
                   final feedback = feedbackController.text;
                   if (feedback.isNotEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("피드백 제출됨: $feedback")),
+                      SnackBar(content: Text("피드백 제출됨: \$feedback")),
                     );
                     feedbackController.clear();
                   }

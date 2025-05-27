@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lotify/screen/component/common_layout.dart';
 
 class Vehicle extends StatefulWidget {
   const Vehicle({super.key});
@@ -12,13 +13,9 @@ class _VehicleState extends State<Vehicle> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFDCEEFF),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFDCEEFF),
-        elevation: 0,
-      ),
-      body: Container(
+    return CommonLayout(
+      currentIndex: 0, // 필요에 따라 탭 인덱스 조절
+      child: Container(
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -93,10 +90,10 @@ class _VehicleState extends State<Vehicle> {
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFDCEEFF),
-                    foregroundColor: Colors.black,
+                  foregroundColor: Colors.black,
                 ),
                 onPressed: () {
-                  print('차량 등록 성공!: $_selected');
+                  print('차량 등록 성공!: \$_selected');
                 },
                 child: const Text('등록'),
               ),

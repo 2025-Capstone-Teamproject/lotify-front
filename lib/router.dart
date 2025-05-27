@@ -1,21 +1,18 @@
 import 'package:go_router/go_router.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:lotify/screen/detect_result_screen.dart';
-import 'package:lotify/screen/main_screen.dart';
-import 'package:lotify/screen/vehicle_screen.dart';
+import 'screen/main_screen.dart';
+import 'screen/vehicle_screen.dart';
+import 'screen/detect_result_screen.dart';
 
 final router = GoRouter(
-  //initialLocation: 'flutter_native_splash',
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) {
-        return MainPage();
-      }
+      builder: (context, state) => const MainPage(),
     ),
     GoRoute(
-        path:'/vehicle',
-    builder: (context, state) => Vehicle()),
+      path: '/vehicle',
+      builder: (context, state) => const Vehicle(),
+    ),
     GoRoute(
       path: '/result',
       builder: (context, state) {
@@ -26,8 +23,7 @@ final router = GoRouter(
           locationDescription: extra['location'] ?? '위치 정보 없음',
           violation: extra['violation'] ?? false,
         );
-      }
-    )
+      },
+    ),
   ],
-
 );
