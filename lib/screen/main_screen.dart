@@ -10,6 +10,7 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CommonLayout(
       currentIndex: 0, // 탭 기준으로 인덱스 설정
+      isMainPage: true,
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -41,7 +42,7 @@ class MainPage extends StatelessWidget {
                     flex: 2,
                     child: GestureDetector(
                       onTap: () {
-                        context.go('/report');
+                        context.push('/report');
                       },
                       child: Container(
                         height: 190,
@@ -142,7 +143,7 @@ class MainPage extends StatelessWidget {
   Widget _circleButton(BuildContext context, IconData icon, String label, String routePath) {
     return GestureDetector(
       onTap: () {
-        context.go(routePath);
+        context.push(routePath);
       },
       child: Column(
         children: [
@@ -161,7 +162,7 @@ class MainPage extends StatelessWidget {
   Widget _smallCardButton(BuildContext context ,String text, Color color, String imagePath, String routePath) {
     return GestureDetector(
       onTap: () {
-        context.go(routePath);
+        context.push(routePath);
       },
       child: Container(
         padding: EdgeInsets.all(8),

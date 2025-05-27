@@ -1,4 +1,4 @@
-// 신고 페이지 화면
+// 관리자 신청 화면
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -10,10 +10,10 @@ class ReportPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CommonLayout(
-        currentIndex: 0,
-        child: Column(
-          children: [],
-        ),
+      currentIndex: 0,
+      child: Column(
+        children: [],
+      ),
     );
   }
 }
