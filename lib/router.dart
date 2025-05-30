@@ -27,13 +27,18 @@ final router = GoRouter(
       path: '/result',
       builder: (context, state) {
         final extra = state.extra as Map<String, dynamic>? ?? {};
+
+        final rawViolationData = extra['violationData'] ?? {};
+        final Map<String, dynamic> violationData =
+        Map<String, dynamic>.from(rawViolationData);
+
         return DetectionResultScreen(
-          carNumber: extra['carNumber'] ?? '번호 없음',
           imageUrl: extra['imageUrl'] ?? '',
-          locationDescription: extra['location'] ?? '위치 정보 없음',
           violation: extra['violation'] ?? false,
+          violationData: violationData,
         );
       },
     ),
+
   ],
 );
