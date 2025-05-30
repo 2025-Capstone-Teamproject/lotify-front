@@ -3,29 +3,39 @@ import 'package:go_router/go_router.dart';
 import 'package:lotify/screen/component/common_layout.dart';
 
 class DetectionResultScreen extends StatelessWidget {
-  final String carNumber;
   final String imageUrl;
-  final String locationDescription;
   final bool violation;
+  final Map<String, dynamic> violationData;
   final TextEditingController feedbackController = TextEditingController();
 
   DetectionResultScreen({
     super.key,
-    required this.carNumber,
     required this.imageUrl,
-    required this.locationDescription,
     required this.violation,
+    required this.violationData,
   });
 
   @override
   Widget build(BuildContext context) {
     final String resultMessage = violation
-        ? "🚨 AI가 불법 주차 차량을 감지했습니다"
+        ? "⛔ 불법 주차 위반 차량"
         : "✅ 정상 주차 상태입니다.";
     final Color statusColor = violation ? Colors.redAccent : Colors.green;
 
+    final String vehicleType = violation
+        ? (violationData['vehicle']?['vehicle_type'] ?? '알 수 없음')
+        : '';
+
+    final String violationType = violation
+        ? (violationData['violation_zone']?['violation_type'] ?? '위반 정보 없음')
+        : '';
+
+    final String penalty = violation
+        ? (violationData['violation_zone']?['penalty_description'] ?? '정보 없음')
+        : '';
+
     return CommonLayout(
-      currentIndex: 0, // 하단 네비게이션에서 현재 선택 인덱스
+      currentIndex: 0,
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -37,7 +47,6 @@ class DetectionResultScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            // 차량 사진
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image.network(
@@ -52,35 +61,29 @@ class DetectionResultScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            // 차량 번호
-            Card(
-              elevation: 2,
-              child: ListTile(
-                leading: const Icon(Icons.directions_car),
-                title: Text("차량 번호: $carNumber"),
+            if (violation) ...[
+              Card(
+                elevation: 2,
+                child: ListTile(
+                  leading: const Icon(Icons.local_taxi),
+                  title: Text("차량 종류: $vehicleType"),
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-
-            // 위치 정보
-            const Text(
-              "🚧 발생 위치",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              height: 180,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(12),
+              Card(
+                elevation: 2,
+                child: ListTile(
+                  leading: const Icon(Icons.warning_amber),
+                  title: Text("위반 내용: $violationType"),
+                ),
               ),
-              alignment: Alignment.center,
-              child: Text(locationDescription, textAlign: TextAlign.center),
-            ),
-
-            const SizedBox(height: 30),
-            // 신고 버튼
-            if (violation)
+              Card(
+                elevation: 2,
+                child: ListTile(
+                  leading: const Icon(Icons.gavel),
+                  title: Text("$penalty"),
+                ),
+              ),
+              const SizedBox(height: 20),
               Center(
                 child: ElevatedButton.icon(
                   onPressed: () {
@@ -88,7 +91,7 @@ class DetectionResultScreen extends StatelessWidget {
                       const SnackBar(content: Text("신고가 접수되었습니다.")),
                     );
                   },
-                  icon: const Icon(Icons.report_gmailerrorred),
+                  icon: const Icon(Icons.report),
                   label: const Text("불법 주차 신고하기"),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.redAccent,
@@ -96,6 +99,15 @@ class DetectionResultScreen extends StatelessWidget {
                   ),
                 ),
               ),
+            ] else ...[
+              Card(
+                elevation: 2,
+                child: ListTile(
+                  leading: const Icon(Icons.check_circle, color: Colors.green),
+                  title: const Text("위반 사항이 감지되지 않았습니다."),
+                ),
+              ),
+            ],
 
             const SizedBox(height: 40),
             const Text(
@@ -121,7 +133,7 @@ class DetectionResultScreen extends StatelessWidget {
                   final feedback = feedbackController.text;
                   if (feedback.isNotEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("피드백 제출됨: \$feedback")),
+                      SnackBar(content: Text("피드백 제출됨: $feedback")),
                     );
                     feedbackController.clear();
                   }

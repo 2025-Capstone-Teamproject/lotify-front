@@ -1,8 +1,7 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:lotify/screen/component/common_layout.dart';
+import 'package:lotify/screen/camera_handler.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -12,22 +11,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final ImagePicker _picker = ImagePicker();
-
-  Future<void> _pickVideoAndGoToResult(BuildContext context) async {
-    final XFile? pickedFile = await _picker.pickVideo(source: ImageSource.camera);
-
-    //임시로 받아오는 데이터임
-    if (pickedFile != null && context.mounted) {
-      context.go('/result', extra: {
-        'carNumber': '123가 4567',
-        'imageUrl': 'https://via.placeholder.com/400x300.png?text=불법+주차+차량',
-        'location': '서울시 강남구 테헤란로 123',
-        'violation': false,
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return CommonLayout(
@@ -62,7 +45,7 @@ class _MainPageState extends State<MainPage> {
                   Flexible(
                     flex: 2,
                     child: GestureDetector(
-                      onTap: () => _pickVideoAndGoToResult(context),
+                      onTap: () => showImageSourceActionSheet(context),
                       child: Container(
                         height: 190,
                         width: 170,
