@@ -283,27 +283,10 @@ class _LoginScreenState extends State<LoginPage> {
                         // 카카오 로그인 로직
                         _handleSocialLogin('kakao');
                       },
-                      child: Container(
-                        width: 56,
-                        height: 56,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFFFEE500),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Center(
-                          child: Image.asset(
-                            'assets/icons/kakao_logo.png', // 실제 앱에서는 assets 폴더에 이미지 추가 필요
-                            width: 24,
-                            height: 24,
-                            errorBuilder: (context, error, stackTrace) {
-                              return const Icon(
-                                Icons.chat_bubble,
-                                color: Color(0xFF3C1E1E),
-                                size: 24,
-                              );
-                            },
-                          ),
-                        ),
+                      child: Image.asset(
+                        'assets/images/kakao.png',
+                        width: 84,
+                        height: 84,
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -341,23 +324,10 @@ class _LoginScreenState extends State<LoginPage> {
                         // 구글 로그인 로직
                         _handleSocialLogin('google');
                       },
-                      child: Container(
-                        width: 56,
-                        height: 56,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFFDB4437),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'G',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
+                      child: Image.asset(
+                        'assets/images/google.png',
+                        width: 66,
+                        height: 86,
                       ),
                     ),
                   ],
