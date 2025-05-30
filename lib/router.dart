@@ -1,4 +1,6 @@
 import 'package:go_router/go_router.dart';
+import 'package:lotify/screen/SignUp.dart';
+import 'package:lotify/screen/login_screen.dart';
 import 'screen/main_screen.dart';
 import 'screen/vehicle_screen.dart';
 import 'screen/detect_result_screen.dart';
@@ -6,8 +8,16 @@ import 'screen/detect_result_screen.dart';
 final router = GoRouter(
   routes: [
     GoRoute(
-      path: '/',
-      builder: (context, state) => const MainPage(),
+      path: '/main',
+      builder: (context, state) => const LoginPage(),
+    ),
+    GoRoute(
+      path: '/signup',
+      builder: (context, state) => const SignUpPage(),
+    ),
+    GoRoute(
+      path:'/',
+      builder: (context, state) => const MainPage()
     ),
     GoRoute(
       path: '/vehicle',

@@ -46,41 +46,141 @@ class CommonLayout extends StatelessWidget {
           ),
         ],
       ),
-      endDrawer : Drawer(
-        child: ListView(
-          children: [
-            UserAccountsDrawerHeader(
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: AssetImage('assets/images/logo.png'),
-              ),
-              accountName: Text('Lotify'),
-              accountEmail: Text('lotify@naver.com'),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color(0x1A667EEA), // rgba(102, 126, 234, 0.1)
-                    Color(0x0D764BA2), // rgba(118, 75, 162, 0.05)
-                  ],
-                ),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(10.0),
-                    bottomRight: Radius.circular(10.0),
+      endDrawer: Container(
+        width: MediaQuery.of(context).size.width * 0.75,
+        child: Drawer(
+          child: Container(
+            color: Color(0xFFF5F5F7),
+            child: Column(
+              children: [
+                // 헤더 부분
+                Container(
+                  padding: EdgeInsets.fromLTRB(30, 50, 30, 30),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color(0x1A667EEA),
+                        Color(0x0D764BA2),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
                   ),
-              ),
+                  child: Row(
+                    children: [
+                      // 프로필 아바타
+                      Container(
+                        width: 70,
+                        height: 70,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+                          ),
+                          borderRadius: BorderRadius.circular(22),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xFF667EEA).withOpacity(0.3),
+                              blurRadius: 20,
+                              offset: Offset(0, 8),
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Text(
+                            'L',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 18),
+                      // 프로필 정보
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ShaderMask(
+                              shaderCallback: (bounds) => LinearGradient(
+                                colors: [Color(0xFF667EEA), Color(0xFF764BA2)],
+                              ).createShader(bounds),
+                              child: Text(
+                                'Lotify',
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 6),
+                            Text(
+                              'lotify@naver.com',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Color(0xFF888888),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // 메뉴 아이템들
+                Expanded(
+                  child: ListView(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    children: [
+                      _buildMenuItem(Icons.home, '홈', () {
+                        context.go('/');
+                      }),
+                      _buildMenuItem(Icons.check_circle_outline, '수정할거 1', () {
+                        // 할일 페이지로 이동
+                      }, badge: '3'),
+                      _buildMenuItem(Icons.folder_copy_outlined, '신고내역', () {
+                        // 신고내역 페이지로 이동
+                      }),
+                      _buildMenuItem(Icons.description_outlined, '사용 가이드', () {
+                        // 가이드 페이지로 이동
+                      }),
+
+                      // 구분선
+                      Container(
+                        height: 1,
+                        margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                        color: Color(0x1A000000),
+                      ),
+
+                      _buildMenuItem(Icons.people_outline, '수정할거 2', () {
+                        // 수정
+                      }),
+                      _buildMenuItem(Icons.settings_outlined, '설정', () {
+                        // 수정
+                      }),
+                    ],
+                  ),
+                ),
+
+                // 하단 로그아웃
+                Padding(
+                  padding: EdgeInsets.all(30),
+                  child: _buildMenuItem(Icons.logout, '로그아웃', () {
+                    // 로그아웃 처리
+                  }, isLogout: true),
+                ),
+              ],
             ),
-            ListTile(
-              leading: Icon(
-                Icons.home,
-                color: Colors.green[850],
-              ),
-              title: Text('홈'),
-              onTap: () {
-                context.go('/'); // 일단 go로
-              },
-            )
-          ],
+          ),
         ),
       ),
 
@@ -114,6 +214,50 @@ class CommonLayout extends StatelessWidget {
           BottomNavigationBarItem(icon: Icon(Icons.map), label: '지도'),
           BottomNavigationBarItem(icon: Icon(Icons.star), label: '즐겨찾기'),
         ],
+      ),
+    );
+  }
+
+  Widget _buildMenuItem(IconData icon, String title, VoidCallback onTap,
+      {String? badge, bool isLogout = false}) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 2),
+      child: ListTile(
+        leading: Icon(
+          icon,
+          color: isLogout ? Color(0xFF888888) : Color(0xFF333333),
+          size: 24,
+        ),
+        title: Text(
+          title,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: isLogout ? Color(0xFF888888) : Color(0xFF333333),
+          ),
+        ),
+        trailing: badge != null
+            ? Container(
+          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+            color: Color(0xFFFF3B30),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Text(
+            badge,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        )
+            : null,
+        onTap: onTap,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        hoverColor: Color(0x1A667EEA),
       ),
     );
   }
