@@ -22,6 +22,10 @@ class CommonLayout extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xFFDCEEFF),
         elevation: 0,
+        title: Text('LOTIFY',
+        style: TextStyle(color: Color(0xFF4A4A4A)),),
+        centerTitle: true,
+        
         leading: isMainPage
             ? null
             : IconButton(
@@ -189,12 +193,13 @@ class CommonLayout extends StatelessWidget {
 
       // 하단 BottomNavigationBar: 경로 전체 다 수정해야함
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color(0xFFDCEEFF),
         currentIndex: currentIndex,
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
           switch (index) {
             case 0:
-              context.go('/vehicle');
+              context.go('/');
               break;
             case 1:
               context.go('/');

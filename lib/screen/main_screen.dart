@@ -33,8 +33,8 @@ class _MainPageState extends State<MainPage> {
               ),
             ),
             Divider(
-              color: Colors.grey[300],
-              thickness: 20,
+              color: Color(0xFF4A4A4A),
+              thickness: 4,
               height: 40,
             ),
             Padding(
@@ -50,7 +50,7 @@ class _MainPageState extends State<MainPage> {
                         height: 190,
                         width: 170,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFBEE2FF),
+                          color: const Color(0xFF77BFFF),
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: const Column(
@@ -80,14 +80,14 @@ class _MainPageState extends State<MainPage> {
                         SizedBox(
                           width: 150,
                           height: 95,
-                          child: _smallCardButton(context, '제보 내역', Colors.pink[200]!,
+                          child: _smallCardButton(context, '제보 내역', Color(0xFFFF6B6B)!,
                               'assets/images/report.png', '/'),
                         ),
                         const SizedBox(height: 10),
                         SizedBox(
                           width: 150,
                           height: 95,
-                          child: _smallCardButton(context, '주차장 공지사항', Colors.blue[100]!,
+                          child: _smallCardButton(context, '주차장 공지사항', Color(0xFF77BFFF)!,
                               'assets/images/anno.png', '/'),
                         ),
                       ],
@@ -97,8 +97,8 @@ class _MainPageState extends State<MainPage> {
               ),
             ),
             Divider(
-              color: Colors.grey[300],
-              thickness: 20,
+              color: Color(0xFF4A4A4A),
+              thickness: 4,
               height: 40,
             ),
             const SizedBox(height: 35),
@@ -151,18 +151,22 @@ class _MainPageState extends State<MainPage> {
       onTap: () {
         context.push(routePath);
       },
-      child: Column(
-        children: [
-          const SizedBox(height: 4),
-          CircleAvatar(
-            backgroundColor: Colors.blue,
-            radius: 30,
-            child: Icon(icon, size: 38, color: Colors.black),
-          ),
-          const SizedBox(height: 8),
-          Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
-        ],
-      ),
+        child: Column(
+          children: [
+            const SizedBox(height: 2),
+            CircleAvatar(
+              radius: 32,
+              backgroundColor: Color(0xFF4A4A4A),
+              child: CircleAvatar(
+                backgroundColor: Colors.white,
+                radius: 30,
+                child: Icon(icon, size: 38, color: Colors.black),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(label, style: const TextStyle(fontWeight: FontWeight.bold)),
+          ],
+        ),
     );
   }
 
