@@ -7,10 +7,17 @@ import 'screen/detect_result_screen.dart';
 
 final router = GoRouter(
   routes: [
+// <<<<<<< HEAD
     GoRoute(
       path: '/main',
       builder: (context, state) => const LoginPage(),
     ),
+// =======
+    // GoRoute(
+    //   path: '/',
+    //   builder: (context, state) => const LoginPage(),
+    // ),
+// >>>>>>> 4cb4bd86a932a1e7f9953b9ab0221181ed445899
     GoRoute(
       path: '/signup',
       builder: (context, state) => const SignUpPage(),

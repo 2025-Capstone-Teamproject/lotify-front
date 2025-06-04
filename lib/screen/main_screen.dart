@@ -178,9 +178,7 @@ class _MainPageState extends State<MainPage> {
                         ],
                       ),
                     ),
-
                     const SizedBox(height: 50),
-
                     // 도움말 섹션
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24),
