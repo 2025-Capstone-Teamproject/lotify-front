@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lotify/screen/component/common_layout.dart';
 
-class ReportPage extends StatelessWidget {
-  const ReportPage({super.key});
+class BoardPage extends StatelessWidget {
+  const BoardPage({super.key});
 
   @override
   Widget build(BuildContext context) {
