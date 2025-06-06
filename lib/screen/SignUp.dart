@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -12,6 +13,7 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpPage> {
   final _nameController = TextEditingController();
+  final _userIdController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
@@ -120,6 +122,14 @@ class _SignUpScreenState extends State<SignUpPage> {
                         hintText: 'lotify@naver.com',
                         icon: Icons.email_outlined,
                         keyboardType: TextInputType.emailAddress,
+                      ),
+                      const SizedBox(height: 16),
+
+                      _buildInputField(
+                        label: '아이디',
+                        controller: _userIdController,
+                        hintText: '아이디를 입력하세요',
+                        icon: Icons.account_circle_outlined,
                       ),
                       const SizedBox(height: 16),
 
@@ -274,6 +284,9 @@ class _SignUpScreenState extends State<SignUpPage> {
             fillColor: const Color(0xFFF9FAFB),
             filled: true,
           ),
+          onChanged: (value) {
+            print(value);
+          },
         ),
       ],
     );
@@ -310,12 +323,15 @@ class _SignUpScreenState extends State<SignUpPage> {
     print('서버 요청 시작');
 
     try {
-      final url = Uri.parse('http://10.0.2.2:8000/user/register');
+      final baseurl = dotenv.env['API_URL'];
+      final url = Uri.parse('$baseurl/user/register');
+      // final url = Uri.parse('http://221.147.177.214:8000/user/register');
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'name': _nameController.text.trim(),
+          'user_id': _userIdController.text.trim(),
           'email': _emailController.text.trim(),
           'user_pw': _passwordController.text,
         }),
@@ -333,9 +349,11 @@ class _SignUpScreenState extends State<SignUpPage> {
         );
         context.go('/'); // 원하는 화면으로 이동
       } else {
+        final decodedBody = jsonDecode(utf8.decode(response.bodyBytes));
+        var msg = decodedBody['detail'];
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('회원가입 실패: ${response.body}'),
+            content: Text('회원가입 실패: ${msg}'),
             backgroundColor: Colors.red,
           ),
         );
