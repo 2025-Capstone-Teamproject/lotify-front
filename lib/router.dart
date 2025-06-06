@@ -23,8 +23,8 @@ final router = GoRouter(
       builder: (context, state) => const SignUpPage(),
     ),
     GoRoute(
-      path:'/main',
-      builder: (context, state) => const MainPage()
+        path:'/main',
+        builder: (context, state) => const MainPage()
     ),
     GoRoute(
       path: '/vehicle',

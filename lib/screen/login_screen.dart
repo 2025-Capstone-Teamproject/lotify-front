@@ -37,15 +37,15 @@ class _LoginScreenState extends State<LoginPage> {
               children: [
                 // 로고 및 앱명
                 Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF6366F1),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Image.asset(
-                    'assets/images/logo.png',
-                  )
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF6366F1),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Image.asset(
+                      'assets/images/logo.png',
+                    )
                 ),
                 const SizedBox(height: 16),
                 const Text(
@@ -464,7 +464,7 @@ class _LoginScreenState extends State<LoginPage> {
       else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-              content: Text('로그인 실패: ${response.body}'),
+            content: Text('로그인 실패: ${response.body}'),
             backgroundColor: Colors.red,
           ),
         );
