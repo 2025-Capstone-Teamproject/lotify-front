@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -322,7 +323,8 @@ class _SignUpScreenState extends State<SignUpPage> {
     print('서버 요청 시작');
 
     try {
-      final url = Uri.parse('http://10.0.2.2:8000/user/register');
+      final baseurl = dotenv.env['API_URL'];
+      final url = Uri.parse('$baseurl/user/register');
       // final url = Uri.parse('http://221.147.177.214:8000/user/register');
       final response = await http.post(
         url,

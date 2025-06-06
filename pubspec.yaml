@@ -19,10 +19,8 @@ dependencies:
   http: ^0.13.6
   http_parser: ^4.0.2
   flutter_launcher_icons: ^0.14.3
-<<<<<<< HEAD
   shared_preferences: ^2.2.2
-=======
->>>>>>> b7dbe691a0a482ef2d22c35a76b45926a9ca566d
+  flutter_dotenv: ^5.2.1
 
 dev_dependencies:
   flutter_test:
@@ -36,6 +34,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - .env
 
 flutter_icons:
   android: "lotify"
