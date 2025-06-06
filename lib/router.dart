@@ -1,6 +1,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:lotify/screen/SignUp.dart';
+import 'package:lotify/screen/board_post.dart';
 import 'package:lotify/screen/board_screen.dart';
+import 'package:lotify/screen/board_write.dart';
 import 'package:lotify/screen/login_screen.dart';
 import 'screen/main_screen.dart';
 import 'screen/vehicle_screen.dart';
@@ -12,6 +14,7 @@ final router = GoRouter(
     //   path: '/',
     //   builder: (context, state) => const LoginPage(),
     // ),
+// >>>>>>> 4cb4bd86a932a1e7f9953b9ab0221181ed445899
     GoRoute(
       path: '/signup',
       builder: (context, state) => const SignUpPage(),
@@ -27,6 +30,14 @@ final router = GoRouter(
     GoRoute(
       path: '/board',
       builder: (context, state) => const BoardPage(),
+    ),
+    GoRoute(
+      path: '/board_write',
+      builder: (context, state) => const BoardWritePage(),
+    ),
+    GoRoute(
+      path: '/board_post',
+      builder: (context, state) => const BoardPostPage(),
     ),
     GoRoute(
       path: '/result',

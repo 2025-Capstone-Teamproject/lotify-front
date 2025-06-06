@@ -5,12 +5,14 @@ class CommonLayout extends StatelessWidget {
   final Widget child;
   final int currentIndex;
   final bool isMainPage;
+  final int notificationCount; // 알림 개수 추가
 
   const CommonLayout({
     super.key,
     required this.child,
     required this.currentIndex,
-    this.isMainPage = false, // 기본값 false
+    this.isMainPage = false,
+    this.notificationCount = 2, // 기본값 0
   });
 
   @override
@@ -29,16 +31,61 @@ class CommonLayout extends StatelessWidget {
         leading: isMainPage
             ? null
             : IconButton(
-                padding: const EdgeInsets.all(8.0),
-                icon: Image.asset("assets/images/backBtn.png"),
-                onPressed: () {
-                  context.pop();
-                },
+          padding: const EdgeInsets.all(8.0),
+          icon: Image.asset("assets/images/backBtn.png"),
+          onPressed: () {
+            context.pop();
+          },
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_none),
-            onPressed: () {},
+          // 알림 아이콘 (개수 표시 포함)
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              IconButton(
+                icon: Icon(
+                  notificationCount > 0
+                      ? Icons.notifications // 알림이 있을 때 색칠된 아이콘
+                      : Icons.notifications_none, // 알림이 없을 때 빈 아이콘
+                  color: notificationCount > 0
+                      ? const Color(0xFF667EEA) // 알림이 있을 때 색상
+                      : null, // 기본 색상
+                ),
+                onPressed: () {
+                  // 알림 페이지로 이동하거나 알림 처리 로직
+                },
+              ),
+              // 알림
+              if (notificationCount > 0)
+                Positioned(
+                  right: 3,
+                  top: 0,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFF3B30),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 1.5,
+                      ),
+                    ),
+                    constraints: const BoxConstraints(
+                      minWidth: 18,
+                      minHeight: 18,
+                    ),
+                    child: Text(
+                      notificationCount > 99 ? '99+' : notificationCount.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+            ],
           ),
           Builder(
             builder: (context) => IconButton(

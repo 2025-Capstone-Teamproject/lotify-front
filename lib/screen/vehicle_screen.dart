@@ -119,11 +119,11 @@ class _VehicleState extends State<Vehicle> {
       url,
       headers: {
         'Content-Type': 'application/json',
+        //토큰
       },
       body: jsonEncode({
         "vehicle_num": vehicleNumController.text,
         "is_disabled": false,
-        "registered_by": '',//userId 세션에서 추출
         "approved_by": adminIdController.text,
       }),
     );
