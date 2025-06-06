@@ -28,7 +28,7 @@ class _MainPageState extends State<MainPage> {
                 children: [
                   _circleButton(context, Icons.admin_panel_settings, '관리자 신청', '/'),
                   _circleButton(context, Icons.directions_car, '차량 등록', '/vehicle'),
-                  _circleButton(context, Icons.forum, '게시판', '/board'),
+                  _circleButton(context, Icons.forum, '게시판', '/'),
                 ],
               ),
             ),
