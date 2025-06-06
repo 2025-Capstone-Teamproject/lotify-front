@@ -43,7 +43,9 @@ Future<void> _pickAndSendImage(BuildContext context, ImageSource source) async {
     return;
   }
 
+  // final uri = Uri.parse('http://192.168.166.252:8000/detect/integrated');
   final uri = Uri.parse('http://192.168.166.252:8000/detect/integrated');
+
 
   try {
     final request = http.MultipartRequest('POST', uri);
@@ -84,4 +86,3 @@ Future<void> _pickAndSendImage(BuildContext context, ImageSource source) async {
     );
   }
 }
-
