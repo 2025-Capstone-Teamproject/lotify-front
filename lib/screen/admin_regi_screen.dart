@@ -107,7 +107,7 @@ class AdminRegiPage extends StatelessWidget {
             backgroundColor: Colors.green,
           ),
         );
-        context.push('/main');
+        context.push('/admin_main');
       } else {
         final decodeBody = jsonDecode(utf8.decode(response.bodyBytes));
         var msg = decodeBody['detail'];
