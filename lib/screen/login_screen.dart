@@ -426,5 +426,12 @@ class _LoginScreenState extends State<LoginPage> {
         backgroundColor: Colors.green,
       ),
     );
+
+    // 메인 화면으로 이동
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (context.mounted) {
+        context.go('/main');
+      }
+    });
   }
 }

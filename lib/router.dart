@@ -9,7 +9,7 @@ final router = GoRouter(
   routes: [
 // <<<<<<< HEAD
     GoRoute(
-      path: '/main',
+      path: '/',
       builder: (context, state) => const LoginPage(),
     ),
 // =======
@@ -23,7 +23,7 @@ final router = GoRouter(
       builder: (context, state) => const SignUpPage(),
     ),
     GoRoute(
-      path:'/',
+      path:'/main',
       builder: (context, state) => const MainPage()
     ),
     GoRoute(

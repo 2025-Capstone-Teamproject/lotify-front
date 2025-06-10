@@ -5,7 +5,8 @@
     <application
         android:label="lotify"
         android:name="${applicationName}"
-        android:icon="@mipmap/lotify">
+        android:icon="@mipmap/lotify"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"
