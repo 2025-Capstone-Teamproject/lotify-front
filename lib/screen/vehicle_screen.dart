@@ -140,31 +140,29 @@ class _VehicleState extends State<Vehicle> {
 
     }
     //장애인 여부 "예"일 경우 승인 요청
-  //   if(_selected == 'yes')
-  //     {
-  //       final urlForApproval = Uri.parse('http://localhost:8000/disabled_request');
-  //       final approvalResponse = await http.post(
-  //           urlForApproval,
-  //           headers: {
-  //           'Content-Type': 'application/json',
-  //           },
-  //           body: jsonEncode({
-  //           "vehicle_num": vehicleNumController.text,
-  //           "requested_by": //user_id 세션에서 추출 추가,
+    //   if(_selected == 'yes')
+    //     {
+    //       final urlForApproval = Uri.parse('http://localhost:8000/disabled_request');
+    //       final approvalResponse = await http.post(
+    //           urlForApproval,
+    //           headers: {
+    //           'Content-Type': 'application/json',
+    //           },
+    //           body: jsonEncode({
+    //           "vehicle_num": vehicleNumController.text,
+    //           "requested_by": //user_id 세션에서 추출 추가,
     //         "admin_id": adminIdController.text,
-  //           }));
-  //
-  //           if (approvalResponse.statusCode == 200 || approvalResponse.statusCode == 201) {
-  //           ScaffoldMessenger.of(context).showSnackBar(
-  //               SnackBar(content: Text('승인 요청이 전송되었습니다.'));
-  //           )
-  //       } else {
-  //               ScaffoldMessenger.of(context).showSnackBar(
-  //               SnackBar(content: Text('승인 요청 전송에 실패하였습니다\n ${approvalResponse.body}'));
-  //               )
-  //   }
-  // }
-    }
+    //           }));
+    //
+    //           if (approvalResponse.statusCode == 200 || approvalResponse.statusCode == 201) {
+    //           ScaffoldMessenger.of(context).showSnackBar(
+    //               SnackBar(content: Text('승인 요청이 전송되었습니다.'));
+    //           )
+    //       } else {
+    //               ScaffoldMessenger.of(context).showSnackBar(
+    //               SnackBar(content: Text('승인 요청 전송에 실패하였습니다\n ${approvalResponse.body}'));
+    //               )
+    //   }
+    // }
   }
-
-
+}

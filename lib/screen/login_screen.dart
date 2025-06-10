@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -9,14 +13,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginPage> {
-  final _emailController = TextEditingController();
+  final _userIdController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
   bool _rememberMe = false;
 
   @override
   void dispose() {
-    _emailController.dispose();
+    _userIdController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -34,15 +38,15 @@ class _LoginScreenState extends State<LoginPage> {
               children: [
                 // 로고 및 앱명
                 Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF6366F1),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Image.asset(
-                    'assets/images/logo.png',
-                  )
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF6366F1),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Image.asset(
+                      'assets/images/logo.png',
+                    )
                 ),
                 const SizedBox(height: 16),
                 const Text(
@@ -87,7 +91,7 @@ class _LoginScreenState extends State<LoginPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            '이메일',
+                            '아이디',
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
@@ -96,12 +100,11 @@ class _LoginScreenState extends State<LoginPage> {
                           ),
                           const SizedBox(height: 8),
                           TextFormField(
-                            controller: _emailController,
-                            keyboardType: TextInputType.emailAddress,
+                            controller: _userIdController,
                             decoration: InputDecoration(
-                              hintText: 'lotify@naver.com',
+                              hintText: '아이디를 입력하세요',
                               prefixIcon: const Icon(
-                                Icons.email_outlined,
+                                Icons.person_outline,
                                 color: Color(0xFF9CA3AF),
                               ),
                               border: OutlineInputBorder(
@@ -402,12 +405,12 @@ class _LoginScreenState extends State<LoginPage> {
     // 예: 카카오톡 SDK, 구글 Sign-In, 네이버 로그인 SDK 등
   }
 
-  void _handleLogin() {
+  void _handleLogin() async {
     // 간단한 유효성 검증
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+    if (_userIdController.text.isEmpty || _passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('이메일과 비밀번호를 입력해주세요.'),
+          content: Text('아이디와 비밀번호를 입력해주세요.'),
           backgroundColor: Colors.red,
         ),
       );
@@ -415,7 +418,7 @@ class _LoginScreenState extends State<LoginPage> {
     }
 
     // 로그인 로직 구현 필요
-    print('Email: ${_emailController.text}');
+    print('Email: ${_userIdController.text}');
     print('Password: ${_passwordController.text}');
     print('Remember Me: $_rememberMe');
 
@@ -433,5 +436,71 @@ class _LoginScreenState extends State<LoginPage> {
         context.go('/main');
       }
     });
+
+    print('서버 요청 시작');
+
+    try {
+      final baseUrl = dotenv.env['API_URL'];
+      final url = Uri.parse('$baseUrl/user/login');
+      // final url = Uri.parse('http://221.147.177.214:8000/user/register');
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'user_id': _userIdController.text.trim(),
+          'user_pw': _passwordController.text,
+        }),
+      );
+
+      print('서버 응답: ${response.statusCode}');
+      print('응답 내용: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final token = jsonDecode(response.body)['access_token'];
+        final role = jsonDecode(response.body)['role'];
+        print('로그인 성공:${response.body}');
+        print('토큰: ${token}');
+        print('role: ${role}');
+        // 성공 메시지 (실제로는 메인 화면으로 네비게이션)
+
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', token);
+
+        final prefs1 = await SharedPreferences.getInstance();
+        final token1 = prefs1.getString('token');
+        print('프론트 환경에서 token 사용: ${token1}');
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('로그인 성공!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        if (role == 1) {
+          context.push('/admin_main');
+        } else {
+          context.push('/main');
+        }
+      }
+
+      else {
+        final decodedBody = jsonDecode(utf8.decode(response.bodyBytes));
+        var msg = decodedBody['detail'];
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('로그인 실패: ${msg}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      print('에러 발생: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('오류 발생: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }

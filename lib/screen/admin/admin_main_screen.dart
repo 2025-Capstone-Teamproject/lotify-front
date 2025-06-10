@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:lotify/screen/component/common_layout.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lotify/screen/component/common_layout.dart';
 import 'package:lotify/screen/camera_handler.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+class AdminMainPage extends StatefulWidget {
+  const AdminMainPage({super.key});
 
   @override
-  State<MainPage> createState() => _MainPageState();
+  State<AdminMainPage> createState() => _AdminMainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
-  // 알림 개수 상태 관리 (실제로는 서버나 상태관리에서 가져와야 함)
-  int notificationCount = 3; // 예시로 3개 설정
+class _AdminMainPageState extends State<AdminMainPage> {
+  int notificationCount = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -49,15 +49,15 @@ class _MainPageState extends State<MainPage> {
                           _modernCircleButton(
                             context,
                             Icons.admin_panel_settings_outlined,
-                            '관리자 신청',
-                            '/adminRegi',
+                            '사용자 관리',
+                            '/adminRegi', // 수정 필요
                             [Color(0xFF6366F1), Color(0xFF8B5CF6)],
                           ),
                           _modernCircleButton(
                             context,
                             Icons.directions_car_outlined,
-                            '차량 등록',
-                            '/vehicle',
+                            '차량 관리',
+                            '/vehicle', // 수정 필요
                             [Color(0xFF06B6D4), Color(0xFF3B82F6)],
                           ),
                           _modernCircleButton(
@@ -133,7 +133,7 @@ class _MainPageState extends State<MainPage> {
                                         ),
                                         const SizedBox(height: 16),
                                         Text(
-                                          '특별 구역\n불법 주차 신고',
+                                          '신고 내역 관리',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
@@ -239,7 +239,6 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
-
   Widget _modernCircleButton(
       BuildContext context,
       IconData icon,
@@ -289,7 +288,6 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
-
   Widget _modernSmallCard(
       BuildContext context,
       String title,
@@ -348,7 +346,6 @@ class _MainPageState extends State<MainPage> {
       ),
     );
   }
-
   Widget _helpListTile(
       String title,
       IconData icon,
