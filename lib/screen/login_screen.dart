@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginPage> {
                     children: [
                       const SizedBox(height: 22),
 
-                      // 아이디 입력
+                      // 이메일 입력
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -104,7 +104,7 @@ class _LoginScreenState extends State<LoginPage> {
                             decoration: InputDecoration(
                               hintText: '아이디를 입력하세요',
                               prefixIcon: const Icon(
-                                Icons.account_circle_outlined,
+                                Icons.person_outline,
                                 color: Color(0xFF9CA3AF),
                               ),
                               border: OutlineInputBorder(
@@ -406,12 +406,11 @@ class _LoginScreenState extends State<LoginPage> {
   }
 
   void _handleLogin() async {
-    print('handleLogin 함수 시작됨');
     // 간단한 유효성 검증
     if (_userIdController.text.isEmpty || _passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('이메일과 비밀번호를 입력해주세요.'),
+          content: Text('아이디와 비밀번호를 입력해주세요.'),
           backgroundColor: Colors.red,
         ),
       );
@@ -423,6 +422,7 @@ class _LoginScreenState extends State<LoginPage> {
     print('Password: ${_passwordController.text}');
     print('Remember Me: $_rememberMe');
 
+// <<<<<<< HEAD
     print('서버 요청 시작');
 
     try {
@@ -441,7 +441,7 @@ class _LoginScreenState extends State<LoginPage> {
       print('서버 응답: ${response.statusCode}');
       print('응답 내용: ${response.body}');
 
-      if(response.statusCode == 200) {
+      if (response.statusCode == 200) {
         final token = jsonDecode(response.body)['access_token'];
         final role = jsonDecode(response.body)['role'];
         print('로그인 성공:${response.body}');
@@ -462,9 +462,9 @@ class _LoginScreenState extends State<LoginPage> {
             backgroundColor: Colors.green,
           ),
         );
-        if(role == 1) {
+        if (role == 1) {
           context.push('/admin_main');
-        } else{
+        } else {
           context.push('/main');
         }
       }
@@ -479,7 +479,7 @@ class _LoginScreenState extends State<LoginPage> {
           ),
         );
       }
-    } catch(e) {
+    } catch (e) {
       print('에러 발생: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

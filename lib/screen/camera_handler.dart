@@ -86,4 +86,3 @@ Future<void> _pickAndSendImage(BuildContext context, ImageSource source) async {
     );
   }
 }
-
