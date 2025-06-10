@@ -443,8 +443,10 @@ class _LoginScreenState extends State<LoginPage> {
 
       if(response.statusCode == 200) {
         final token = jsonDecode(response.body)['access_token'];
+        final role = jsonDecode(response.body)['role'];
         print('로그인 성공:${response.body}');
         print('토큰: ${token}');
+        print('role: ${role}');
         // 성공 메시지 (실제로는 메인 화면으로 네비게이션)
 
         final prefs = await SharedPreferences.getInstance();
@@ -460,13 +462,19 @@ class _LoginScreenState extends State<LoginPage> {
             backgroundColor: Colors.green,
           ),
         );
-        context.push('/main');
+        if(role == 1) {
+          context.push('/admin_main');
+        } else{
+          context.push('/main');
+        }
       }
 
       else {
+        final decodedBody = jsonDecode(utf8.decode(response.bodyBytes));
+        var msg = decodedBody['detail'];
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('로그인 실패: ${response.body}'),
+            content: Text('로그인 실패: ${msg}'),
             backgroundColor: Colors.red,
           ),
         );
