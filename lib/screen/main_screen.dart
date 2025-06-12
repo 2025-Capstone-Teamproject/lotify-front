@@ -64,7 +64,7 @@ class _MainPageState extends State<MainPage> {
                             context,
                             Icons.forum_outlined,
                             '게시판',
-                            '/',
+                            '/board',
                             [Color(0xFF10B981), Color(0xFF059669)],
                           ),
                         ],
