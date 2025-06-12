@@ -91,11 +91,11 @@ class _AdminMainPageState extends State<AdminMainPage> {
 
                           Row(
                             children: [
-                              // 특별 구역 불법 주차 신고 카드
+                              // 신고 내역 관리
                               Expanded(
                                 flex: 3,
                                 child: GestureDetector(
-                                  onTap: () => showImageSourceActionSheet(context),
+                                  onTap: () {context.push('/report_manage');},
                                   child: Container(
                                     height: 170,
                                     decoration: BoxDecoration(
@@ -103,8 +103,8 @@ class _AdminMainPageState extends State<AdminMainPage> {
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,
                                         colors: [
-                                          Color(0xFF3B82F6),
-                                          Color(0xFF1D4ED8),
+                                          Color(0xFFEF4444),
+                                          Color(0xFFEA580C),
                                         ],
                                       ),
                                       borderRadius: BorderRadius.circular(20),
@@ -126,7 +126,7 @@ class _AdminMainPageState extends State<AdminMainPage> {
                                             borderRadius: BorderRadius.circular(16),
                                           ),
                                           child: Icon(
-                                            Icons.camera_alt_outlined,
+                                            Icons.report_problem_outlined,
                                             size: 40,
                                             color: Colors.white,
                                           ),
@@ -168,7 +168,7 @@ class _AdminMainPageState extends State<AdminMainPage> {
                                       '주차장 공지사항',
                                       [Color(0xFF8B5CF6), Color(0xFF7C3AED)],
                                       Icons.announcement_outlined,
-                                      '/',
+                                      '/anno',
                                     ),
                                   ],
                                 ),
@@ -212,14 +212,14 @@ class _AdminMainPageState extends State<AdminMainPage> {
                                 _helpListTile(
                                   '자주 묻는 질문',
                                   Icons.help_outline,
-                                      () {},
+                                    (){},
                                   isFirst: true,
                                 ),
                                 Divider(height: 1, color: Colors.grey[100]),
                                 _helpListTile(
                                   '불법 주차 신고 가이드',
                                   Icons.menu_book_outlined,
-                                      () {},
+                                      () {context.go('/guide');},
                                   isLast: true,
                                 ),
                               ],

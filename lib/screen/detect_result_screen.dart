@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:lotify/screen/component/common_layout.dart';
+import 'package:intl/intl.dart';
 
 class DetectionResultScreen extends StatelessWidget {
   final String imageUrl;
@@ -27,12 +27,13 @@ class DetectionResultScreen extends StatelessWidget {
         : '';
 
     final String violationType = violation
-        ? (violationData['violation_zone']?['violation_type'] ?? '위반 정보 없음')
+        ? (violationData['violation_zone']?['korean_name'] ?? '위반 정보 없음')
         : '';
 
-    final String penalty = violation
-        ? (violationData['violation_zone']?['penalty_description'] ?? '정보 없음')
-        : '';
+    final int? penaltyAmount = violationData['violation_zone']?['penalty'];
+    final String penalty = (penaltyAmount != null)
+        ? '벌금: ${NumberFormat('#,###').format(penaltyAmount)}원'
+        : '벌금 정보 없음';
 
     return CommonLayout(
       currentIndex: 0,
@@ -43,10 +44,13 @@ class DetectionResultScreen extends StatelessWidget {
           children: [
             Text(
               resultMessage,
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: statusColor,
+              ),
             ),
             const SizedBox(height: 20),
-
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image.network(
@@ -60,7 +64,6 @@ class DetectionResultScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-
             if (violation) ...[
               Card(
                 elevation: 2,
@@ -80,7 +83,7 @@ class DetectionResultScreen extends StatelessWidget {
                 elevation: 2,
                 child: ListTile(
                   leading: const Icon(Icons.gavel),
-                  title: Text("$penalty"),
+                  title: Text(penalty),
                 ),
               ),
               const SizedBox(height: 20),
@@ -108,7 +111,6 @@ class DetectionResultScreen extends StatelessWidget {
                 ),
               ),
             ],
-
             const SizedBox(height: 40),
             const Text(
               "📝 피드백 남기기",

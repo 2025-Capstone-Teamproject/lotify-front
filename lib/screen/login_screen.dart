@@ -288,8 +288,8 @@ class _LoginScreenState extends State<LoginPage> {
                       },
                       child: Image.asset(
                         'assets/images/kakao.png',
-                        width: 84,
-                        height: 84,
+                        width: 55,
+                        height: 55,
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -301,8 +301,8 @@ class _LoginScreenState extends State<LoginPage> {
                         _handleSocialLogin('naver');
                       },
                       child: Container(
-                        width: 56,
-                        height: 56,
+                        width: 55,
+                        height: 55,
                         decoration: const BoxDecoration(
                           color: Color(0xFF03C75A),
                           shape: BoxShape.circle,
@@ -329,8 +329,8 @@ class _LoginScreenState extends State<LoginPage> {
                       },
                       child: Image.asset(
                         'assets/images/google.png',
-                        width: 66,
-                        height: 86,
+                        width: 70,
+                        height: 70,
                       ),
                     ),
                   ],
@@ -422,7 +422,16 @@ class _LoginScreenState extends State<LoginPage> {
     print('Password: ${_passwordController.text}');
     print('Remember Me: $_rememberMe');
 
-// <<<<<<< HEAD
+    // 성공 메시지 (실제로는 메인 화면으로 네비게이션)
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('로그인 성공!'),
+        backgroundColor: Colors.green,
+      ),
+    );
+
+
+
     print('서버 요청 시작');
 
     try {
@@ -443,7 +452,9 @@ class _LoginScreenState extends State<LoginPage> {
 
       if (response.statusCode == 200) {
         final token = jsonDecode(response.body)['access_token'];
-        final role = jsonDecode(response.body)['role'];
+        // final role = jsonDecode(response.body)['role'];
+        // final role = int.parse(decodedBody['role'].toString())
+        final role = int.parse(jsonDecode(response.body)['role'].toString());
         print('로그인 성공:${response.body}');
         print('토큰: ${token}');
         print('role: ${role}');
@@ -462,10 +473,21 @@ class _LoginScreenState extends State<LoginPage> {
             backgroundColor: Colors.green,
           ),
         );
+
         if (role == 1) {
-          context.push('/admin_main');
+          // 메인 화면으로 이동
+          Future.delayed(const Duration(milliseconds: 500), () {
+            if (context.mounted) {
+              context.go('/admin_main');
+            }
+          });
         } else {
-          context.push('/main');
+          // 메인 화면으로 이동
+          Future.delayed(const Duration(milliseconds: 500), () {
+            if (context.mounted) {
+              context.go('/main');
+            }
+          });
         }
       }
 

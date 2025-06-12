@@ -334,6 +334,7 @@ class _SignUpScreenState extends State<SignUpPage> {
           'user_id': _userIdController.text.trim(),
           'email': _emailController.text.trim(),
           'user_pw': _passwordController.text,
+          'role' : 2 // role 강제 부여
         }),
       );
 

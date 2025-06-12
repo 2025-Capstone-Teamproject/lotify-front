@@ -1,8 +1,11 @@
 import 'package:go_router/go_router.dart';
 import 'package:lotify/screen/SignUp.dart';
 import 'package:lotify/screen/admin/admin_main_screen.dart';
+import 'package:lotify/screen/admin/report_manage.dart';
 import 'package:lotify/screen/admin_regi_screen.dart';
+import 'package:lotify/screen/announcement_screen.dart';
 import 'package:lotify/screen/login_screen.dart';
+import 'package:lotify/screen/report_guide.dart';
 import 'screen/main_screen.dart';
 import 'screen/vehicle_screen.dart';
 import 'screen/detect_result_screen.dart';
@@ -56,6 +59,17 @@ final router = GoRouter(
       path: '/admin_main',
       builder: (context, state) =>  AdminMainPage(),
     ),
-
+    GoRoute(
+      path: '/report_manage',
+      builder: (context, state) =>  ReportManagePage(),
+    ),
+    GoRoute(
+      path: '/anno',
+      builder: (context, state) =>  AnnoPage(),
+    ),
+    GoRoute(
+      path: '/guide',
+      builder: (context, state) =>  GuidePage(),
+    ),
   ],
 );

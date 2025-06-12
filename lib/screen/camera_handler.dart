@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 final ImagePicker _picker = ImagePicker();
 
@@ -43,9 +44,8 @@ Future<void> _pickAndSendImage(BuildContext context, ImageSource source) async {
     return;
   }
 
-  // final uri = Uri.parse('http://192.168.166.252:8000/detect/integrated');
-  final uri = Uri.parse('http://192.168.166.252:8000/detect/integrated');
-
+  final aiBaseUrl = dotenv.env['AI_API_URL'];
+  final uri = Uri.parse('$aiBaseUrl/detect-file');
 
   try {
     final request = http.MultipartRequest('POST', uri);

@@ -168,7 +168,7 @@ class _MainPageState extends State<MainPage> {
                                       '주차장 공지사항',
                                       [Color(0xFF8B5CF6), Color(0xFF7C3AED)],
                                       Icons.announcement_outlined,
-                                      '/',
+                                      '/anno',
                                     ),
                                   ],
                                 ),
@@ -219,7 +219,7 @@ class _MainPageState extends State<MainPage> {
                                 _helpListTile(
                                   '불법 주차 신고 가이드',
                                   Icons.menu_book_outlined,
-                                      () {},
+                                      () {context.push('/guide');},
                                   isLast: true,
                                 ),
                               ],

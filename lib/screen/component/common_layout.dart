@@ -193,7 +193,7 @@ class CommonLayout extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 20),
                     children: [
                       _buildMenuItem(Icons.home, '홈', () {
-                        context.go('/');
+                        context.go('/main');
                       }),
                       _buildMenuItem(Icons.check_circle_outline, '수정할거 1', () {
                         // 할일 페이지로 이동
@@ -202,7 +202,7 @@ class CommonLayout extends StatelessWidget {
                         // 신고내역 페이지로 이동
                       }),
                       _buildMenuItem(Icons.description_outlined, '사용 가이드', () {
-                        // 가이드 페이지로 이동
+                        context.push('/guide');
                       }),
 
                       // 구분선
@@ -227,6 +227,7 @@ class CommonLayout extends StatelessWidget {
                   padding: EdgeInsets.all(30),
                   child: _buildMenuItem(Icons.logout, '로그아웃', () {
                     // 로그아웃 처리
+                    context.go('/');
                   }, isLogout: true),
                 ),
               ],
