@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_naver_login/interface/types/naver_login_result.dart';
+import 'package:flutter_naver_login/interface/types/naver_login_status.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
+import 'package:flutter_naver_login/flutter_naver_login.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -41,11 +47,12 @@ class _LoginScreenState extends State<LoginPage> {
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF6366F1),
-                      borderRadius: BorderRadius.circular(20),
+                      // color: const Color(0xFF6366F1),
+                      color: const Color(0xFFFFFFFF),
+                      // borderRadius: BorderRadius.circular(20),
                     ),
                     child: Image.asset(
-                      'assets/images/logo.png',
+                      'assets/images/lotify.png',
                     )
                 ),
                 const SizedBox(height: 16),
@@ -378,7 +385,7 @@ class _LoginScreenState extends State<LoginPage> {
     );
   }
 
-  void _handleSocialLogin(String provider) {
+  Future<void> _handleSocialLogin(String provider) async {
     String providerName;
     switch (provider) {
       case 'kakao':
@@ -401,8 +408,109 @@ class _LoginScreenState extends State<LoginPage> {
       ),
     );
 
-    // 실제 소셜 로그인 로직 구현 필요
-    // 예: 카카오톡 SDK, 구글 Sign-In, 네이버 로그인 SDK 등
+    try {
+      late http.Response res;
+
+      if (provider == 'google') {
+        print('[디버그] 구글 로그인 시작');
+
+        final GoogleSignIn googleSignIn = GoogleSignIn(
+          serverClientId: '385351075584-k0521f22u25s99l91c29vseaq6v6ofum.apps.googleusercontent.com', // 🔁 이 부분 수정
+          scopes: ['email', 'profile'],
+        );
+
+        final GoogleSignInAccount? account = await googleSignIn.signIn();
+        if (account == null) {
+          throw Exception('Google 계정 선택이 취소되었습니다.');
+        }
+
+        final GoogleSignInAuthentication auth = await account.authentication;
+        final String? idToken = auth.idToken;
+        if (idToken == null) {
+          throw Exception('Google ID 토큰을 가져올 수 없습니다.');
+        }
+
+        print('[디버그] 구글 ID 토큰 발급됨');
+        print('[디버그] idToken: $idToken');
+
+        res = await http.post(
+          Uri.parse("http://192.168.139.50:8000/auth/google/callback"),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({'id_token': idToken}),
+        );
+
+        print('[디버그] 구글 로그인 백엔드 응답 코드: ${res.statusCode}');
+        print('[디버그] 응답 내용: ${res.body}');
+      }
+
+
+      else if (provider == 'kakao') {
+        try {
+          print('[디버그] 카카오 로그인 시작');
+          OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
+          print('[디버그] 로그인 성공, accessToken: ${token.accessToken}');
+
+          final accessToken = token.accessToken;
+
+          res = await http.post(
+            Uri.parse("http://192.168.139.50:8000/auth/kakao/callback"),
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode({'access_token': accessToken}),
+          );
+
+          print('[디버그] 백엔드 응답 코드: ${res.statusCode}');
+          print('[디버그] 백엔드 응답 내용: ${res.body}');
+        } catch (e) {
+          print('[에러] 카카오 로그인 중 예외 발생: $e');
+        }
+      }
+
+
+      else if (provider == 'naver') {
+        final NaverLoginResult result = await FlutterNaverLogin.logIn();
+        if (result.status != NaverLoginStatus.loggedIn) {
+          throw Exception('네이버 로그인 실패: ${result.status}');
+        }
+
+        final token = await FlutterNaverLogin.getCurrentAccessToken();
+        final accessToken = token.accessToken;
+
+        res = await http.post(
+          Uri.parse("http://192.168.139.50:8000/auth/naver/callback"),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({'access_token': accessToken}),
+        );
+      }
+
+      if (res.statusCode == 200) {
+        final data = jsonDecode(res.body);
+        final accessToken = data['access_token'];
+
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('access_token', accessToken);
+
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('로그인 성공!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+
+        context.push('/main');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('로그인 실패: ${res.body}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('로그인 오류: $e')),
+      );
+    }
   }
 
   void _handleLogin() async {
@@ -423,12 +531,12 @@ class _LoginScreenState extends State<LoginPage> {
     print('Remember Me: $_rememberMe');
 
     // 성공 메시지 (실제로는 메인 화면으로 네비게이션)
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('로그인 성공!'),
-        backgroundColor: Colors.green,
-      ),
-    );
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   const SnackBar(
+    //     content: Text('로그인 성공!'),
+    //     backgroundColor: Colors.green,
+    //   ),
+    // );
 
 
 
@@ -452,8 +560,6 @@ class _LoginScreenState extends State<LoginPage> {
 
       if (response.statusCode == 200) {
         final token = jsonDecode(response.body)['access_token'];
-        // final role = jsonDecode(response.body)['role'];
-        // final role = int.parse(decodedBody['role'].toString())
         final role = int.parse(jsonDecode(response.body)['role'].toString());
         print('로그인 성공:${response.body}');
         print('토큰: ${token}');
@@ -467,24 +573,30 @@ class _LoginScreenState extends State<LoginPage> {
         final token1 = prefs1.getString('token');
         print('프론트 환경에서 token 사용: ${token1}');
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('로그인 성공!'),
-            backgroundColor: Colors.green,
-          ),
-        );
 
         if (role == 1) {
           // 메인 화면으로 이동
-          Future.delayed(const Duration(milliseconds: 500), () {
+          Future.delayed(const Duration(milliseconds: 100), () {
             if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('로그인 성공!'),
+                  backgroundColor: Colors.green,
+                ),
+              );
               context.go('/admin_main');
             }
           });
         } else {
           // 메인 화면으로 이동
-          Future.delayed(const Duration(milliseconds: 500), () {
+          Future.delayed(const Duration(milliseconds: 100), () {
             if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('로그인 성공!'),
+                  backgroundColor: Colors.green,
+                ),
+              );
               context.go('/main');
             }
           });

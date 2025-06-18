@@ -50,7 +50,7 @@ class _AdminMainPageState extends State<AdminMainPage> {
                             context,
                             Icons.admin_panel_settings_outlined,
                             '사용자 관리',
-                            '/adminRegi', // 수정 필요
+                            '/user/manage',
                             [Color(0xFF6366F1), Color(0xFF8B5CF6)],
                           ),
                           _modernCircleButton(
@@ -212,14 +212,14 @@ class _AdminMainPageState extends State<AdminMainPage> {
                                 _helpListTile(
                                   '자주 묻는 질문',
                                   Icons.help_outline,
-                                    (){},
+                                    (){context.push('/qna');},
                                   isFirst: true,
                                 ),
                                 Divider(height: 1, color: Colors.grey[100]),
                                 _helpListTile(
                                   '불법 주차 신고 가이드',
                                   Icons.menu_book_outlined,
-                                      () {context.go('/guide');},
+                                      () {context.push('/guide');},
                                   isLast: true,
                                 ),
                               ],

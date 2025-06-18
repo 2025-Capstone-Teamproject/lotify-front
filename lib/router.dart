@@ -1,9 +1,12 @@
 import 'package:go_router/go_router.dart';
+import 'package:lotify/screen/QnA_screen.dart';
 import 'package:lotify/screen/SignUp.dart';
 import 'package:lotify/screen/admin/admin_main_screen.dart';
 import 'package:lotify/screen/admin/report_manage.dart';
+import 'package:lotify/screen/admin/user_manage.dart';
 import 'package:lotify/screen/admin_regi_screen.dart';
 import 'package:lotify/screen/announcement_screen.dart';
+import 'package:lotify/screen/board_screen.dart';
 import 'package:lotify/screen/login_screen.dart';
 import 'package:lotify/screen/report_guide.dart';
 import 'screen/main_screen.dart';
@@ -34,6 +37,10 @@ final router = GoRouter(
     GoRoute(
       path: '/vehicle',
       builder: (context, state) => const Vehicle(),
+    ),
+    GoRoute(
+      path: '/board',
+      builder: (context, state) => const BoardPage(),
     ),
     GoRoute(
       path: '/result',
@@ -70,6 +77,14 @@ final router = GoRouter(
     GoRoute(
       path: '/guide',
       builder: (context, state) =>  GuidePage(),
+    ),
+    GoRoute(
+      path: '/qna',
+      builder: (context, state) =>  QnaPage(),
+    ),
+    GoRoute(
+      path: '/user/manage',
+      builder: (context, state) =>  UserManagePage(),
     ),
   ],
 );
